@@ -1,18 +1,12 @@
-function UpcomingDeadlines() {
-  const deadlines = [
-    {
-      task: "DBMS Assignment",
-      due: "Tomorrow",
-    },
-    {
-      task: "Web Project Submission",
-      due: "3 Days Left",
-    },
-    {
-      task: "IoT Lab Record",
-      due: "1 Week Left",
-    },
-  ];
+function UpcomingDeadlines({
+  assignments = [],
+}) {
+  const deadlines = assignments
+  .filter(
+    (item) =>
+      item.status !== "Completed"
+  )
+  .slice(0, 5);
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow">
@@ -27,12 +21,14 @@ function UpcomingDeadlines() {
             className="flex justify-between border rounded-lg p-4"
           >
             <span className="font-medium">
-              {item.task}
+              {item.title}
             </span>
 
-            <span className="text-red-500 font-semibold">
-              {item.due}
-            </span>
+<span className="text-red-500 font-semibold">
+  {new Date(
+    item.dueDate
+  ).toLocaleDateString()}
+</span>
           </div>
         ))}
       </div>
