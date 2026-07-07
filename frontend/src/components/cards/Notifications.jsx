@@ -1,20 +1,19 @@
+import { showNotification } from "../../utils/showNotification";
+
 function Notifications({
   assignments = [],
   attendance = [],
 }) {
+
   const notifications =
     assignments.filter((item) => {
-      const dueDate =
-        new Date(item.dueDate);
+      const dueDate = new Date(item.dueDate);
+      const today = new Date();
 
-      const today =
-        new Date();
-
-      const diff =
-        Math.ceil(
-          (dueDate - today) /
-            (1000 * 60 * 60 * 24)
-        );
+      const diff = Math.ceil(
+        (dueDate - today) /
+        (1000 * 60 * 60 * 24)
+      );
 
       return (
         diff <= 2 &&
@@ -22,14 +21,21 @@ function Notifications({
       );
     });
 
-    const lowAttendance =
-  attendance.filter(
-    (item) =>
-      (item.attendedClasses /
-        item.totalClasses) *
-        100 <
-      75
-  );
+  notifications.forEach((item) => {
+    showNotification(
+      "Assignment Reminder",
+      `${item.title} is due soon!`
+    );
+  });
+
+  const lowAttendance =
+    attendance.filter(
+      (item) =>
+        (item.attendedClasses /
+          item.totalClasses) *
+          100 <
+        75
+    );
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import toast from "react-hot-toast";
 import {
   getAssignments,
   addAssignment,
@@ -42,6 +43,9 @@ function Assignments() {
         subject,
         dueDate,
       });
+      toast.success(
+  "Assignment added successfully!"
+);
 
       setTitle("");
       setSubject("");

@@ -28,6 +28,24 @@ function Dashboard() {
   }, [navigate]);
 
   useEffect(() => {
+  if (
+    "Notification" in window &&
+    Notification.permission !==
+      "granted"
+  ) {
+    Notification.requestPermission();
+  }
+}, []);
+
+useEffect(() => {
+  if (Notification.permission === "granted") {
+    new Notification("CampusOne", {
+      body: "Notifications are working! 🎉",
+    });
+  }
+}, []);
+
+  useEffect(() => {
   fetchDashboardData();
 }, []);
 
