@@ -5,6 +5,7 @@ import StatsCard from "../components/cards/StatsCard";
 import AttendanceChart from "../components/cards/AttendanceChart";
 import ProgressWidget from "../components/cards/ProgressWidget";
 import TodayClasses from "../components/cards/TodayClasses";
+import UpcomingDeadlines from "../components/cards/UpcomingDeadlines";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -52,6 +53,10 @@ function Dashboard() {
 
       <div className="px-6 pb-6">
         <TodayClasses />
+      </div>
+
+      <div className="px-6 pb-6">
+       <UpcomingDeadlines />
       </div>
 
     </DashboardLayout>
