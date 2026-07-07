@@ -1,5 +1,9 @@
-function Assignments() {
-  return <h1 className="p-6 text-3xl">Aiplanner Page</h1>;
+function AIPlanner() {
+  return (
+    <h1 className="p-6 text-3xl">
+      AI Planner Page
+    </h1>
+  );
 }
 
-export default Aiplanner;
+export default AIPlanner;

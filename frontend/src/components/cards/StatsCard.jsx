@@ -5,10 +5,10 @@ function StatsCard({
   icon,
 }) {
   return (
-    <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
+    <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300">
 
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">
+        <h2 className="text-xl font-bold text-gray-800">
           {title}
         </h2>
 
@@ -17,9 +17,7 @@ function StatsCard({
         </span>
       </div>
 
-      <p
-        className={`text-5xl mt-6 font-bold ${color}`}
-      >
+      <p className={`text-5xl font-bold mt-6 ${color}`}>
         {value}
       </p>
 
