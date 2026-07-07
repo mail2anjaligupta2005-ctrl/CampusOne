@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import StatsCard from "../components/cards/StatsCard";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -20,37 +21,30 @@ function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="p-6 grid md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-xl font-bold">
-            Attendance
-          </h2>
+    <div className="p-6 grid md:grid-cols-3 gap-6">
 
-          <p className="text-4xl text-blue-600 mt-4">
-            85%
-          </p>
-        </div>
+  <StatsCard
+    title="Attendance"
+    value="85%"
+    color="text-blue-600"
+    icon="📚"
+  />
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-xl font-bold">
-            GPA
-          </h2>
+  <StatsCard
+    title="GPA"
+    value="8.23"
+    color="text-green-600"
+    icon="🎓"
+  />
 
-          <p className="text-4xl text-green-600 mt-4">
-            8.23
-          </p>
-        </div>
+  <StatsCard
+    title="Assignments"
+    value="3"
+    color="text-red-600"
+    icon="📝"
+  />
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-xl font-bold">
-            Assignments
-          </h2>
-
-          <p className="text-4xl text-red-600 mt-4">
-            3
-          </p>
-        </div>
-      </div>
+</div>
     </DashboardLayout>
   );
 }
