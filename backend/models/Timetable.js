@@ -7,15 +7,7 @@ const timetableSchema =
         type: String,
         required: true,
       },
-      startTime: {
-        type: String,
-        required: true,
-      },
-      endTime: {
-        type: String,
-        required: true,
-      },
-      day: {
+      time: {
         type: String,
         required: true,
       },
