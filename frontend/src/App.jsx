@@ -8,7 +8,6 @@ import Assignments from "./pages/Assignments";
 import Timetable from "./pages/Timetable";
 import AIPlanner from "./pages/AIPlanner";
 import Settings from "./pages/Settings";
-import AIPlanner from "./pages/AIPlanner";
 
 function App() {
   return (

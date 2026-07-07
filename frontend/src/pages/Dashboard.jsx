@@ -8,6 +8,7 @@ import UpcomingDeadlines from "../components/cards/UpcomingDeadlines";
 import { useEffect, useState } from "react";
 import { getAssignments } from "../services/assignmentService";
 import { getAttendance } from "../services/attendanceService";
+import Notifications from "../components/cards/Notifications";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -130,6 +131,13 @@ const pendingAssignments =
        <UpcomingDeadlines
           assignments={assignments}
        />
+
+       <div className="px-6 pb-6">
+         <Notifications
+           assignments={assignments}
+           attendance={attendance}
+         />
+       </div>
       </div>
 
     </DashboardLayout>
