@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import {
   getClasses,
@@ -15,8 +16,13 @@ function Timetable() {
     const handleDelete = async (id) => {
   try {
     await deleteClass(id);
+
+    toast.success("Class deleted successfully! 🗑️");
+
     fetchClasses();
   } catch (error) {
+    toast.error("Failed to delete class.");
+
     console.log(error);
   }
 };
@@ -29,6 +35,8 @@ const handleSubmit = async (e) => {
       subject,
       time,
     });
+
+    toast.success("Class added successfully! 📅");
 
     setSubject("");
     setTime("");

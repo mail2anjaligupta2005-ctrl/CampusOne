@@ -4,21 +4,22 @@ function Sidebar() {
   const location = useLocation();
 
   const menuItems = [
-    { name: "Dashboard", icon: "🏠", path: "/dashboard" },
-    { name: "Attendance", icon: "📚", path: "/attendance" },
-    { name: "Assignments", icon: "📝", path: "/assignments" },
-    { name: "Timetable", icon: "📅", path: "/timetable" },
-    { name: "AI Planner", icon: "🤖", path: "/ai-planner" },
-    { name: "Settings", icon: "⚙️", path: "/settings" },
-  ];
+  { name: "Dashboard", icon: "🏠", path: "/dashboard" },
+  { name: "Attendance", icon: "📚", path: "/attendance" },
+  { name: "Assignments", icon: "📝", path: "/assignments" },
+  { name: "Timetable", icon: "📅", path: "/timetable" },
+  { name: "AI Planner", icon: "🤖", path: "/ai-planner" },
+  { name: "AI Assistant", icon: "💬", path: "/ai-assistant" },
+  { name: "Profile", icon: "👤", path: "/profile" },
+  { name: "Settings", icon: "⚙️", path: "/settings" },
+];
 
   return (
-    <div className="w-72 bg-blue-700 text-white min-h-screen p-6">
+    <div className="w-72 bg-blue-700 text-white min-h-screen p-6 overflow-y-auto">
       <h1 className="text-4xl font-bold mb-12">
-        CampusOne
-      </h1>
-
-      <div className="space-y-3">
+  CampusOne
+</h1>
+      <div className="space-y-3 mt-10">
         {menuItems.map((item) => (
           <Link
             key={item.path}

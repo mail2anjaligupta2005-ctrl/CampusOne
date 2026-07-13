@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -7,9 +8,22 @@ import Attendance from "./pages/Attendance";
 import Assignments from "./pages/Assignments";
 import Timetable from "./pages/Timetable";
 import AIPlanner from "./pages/AIPlanner";
+import AIAssistant from "./pages/AIAssistant";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 
 function App() {
+  useEffect(() => {
+  const darkMode = JSON.parse(
+    localStorage.getItem("darkMode")
+  );
+
+  if (darkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, []);
   return (
     <BrowserRouter>
       <Routes>
@@ -34,14 +48,25 @@ function App() {
         />
 
         <Route
-          path="planner"
-          element={<AIPlanner />}
-        />
+  path="/ai-planner"
+  element={<AIPlanner />}
+/>
+
+<Route
+  path="/ai-assistant"
+  element={<AIAssistant />}
+/>
+
+         <Route
+  path="/profile"
+  element={<Profile />}
+/>
 
         <Route
           path="/settings"
           element={<Settings />}
         />
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import toast from "react-hot-toast";
 import { getAssignments } from "../services/assignmentService";
 
 function AIPlanner() {
@@ -74,6 +75,8 @@ function AIPlanner() {
     }
   );
     setStudyPlan(plan);
+
+    toast.success("Study Plan Generated Successfully! 🤖");
   };
 
   return (
@@ -104,9 +107,19 @@ function AIPlanner() {
         📚 {item.task}
       </p>
 
-      <p className="text-sm text-gray-500 mt-2">
-        Priority: {item.priority}
-      </p>
+      <div className="mt-3">
+  <span
+    className={`px-3 py-1 rounded-full text-sm font-semibold text-white ${
+      item.priority === "High"
+        ? "bg-red-500"
+        : item.priority === "Medium"
+        ? "bg-yellow-500"
+        : "bg-green-500"
+    }`}
+  >
+    {item.priority} Priority
+  </span>
+</div>
     </div>
   ))}
 </div>

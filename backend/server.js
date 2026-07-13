@@ -15,6 +15,7 @@ const assignmentRoutes = require(
 const timetableRoutes = require(
   "./routes/timetableRoutes"
 );
+const aiRoutes = require("./routes/aiRoutes");
 console.log(
   "Timetable routes file:",
   require.resolve(
@@ -45,6 +46,8 @@ app.use(
   "/api/timetable",
   timetableRoutes
 );
+
+app.use("/api/ai", aiRoutes);
 
 app.get("/test-timetable", (req, res) => {
   res.json({

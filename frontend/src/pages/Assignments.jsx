@@ -60,8 +60,12 @@ function Assignments() {
   const handleDelete = async (id) => {
   try {
     await deleteAssignment(id);
+
+    toast.success("Assignment deleted successfully!");
+
     fetchAssignments();
   } catch (error) {
+    toast.error("Failed to delete assignment.");
     console.log(error);
   }
 };
@@ -71,15 +75,24 @@ const handleComplete = async (
   status
 ) => {
   try {
+    const newStatus =
+      status === "Completed"
+        ? "Pending"
+        : "Completed";
+
     await updateAssignment(id, {
-      status:
-        status === "Completed"
-          ? "Pending"
-          : "Completed",
+      status: newStatus,
     });
+
+    toast.success(
+      newStatus === "Completed"
+        ? "Assignment marked as completed! 🎉"
+        : "Assignment marked as pending!"
+    );
 
     fetchAssignments();
   } catch (error) {
+    toast.error("Failed to update assignment.");
     console.log(error);
   }
 };
@@ -130,10 +143,11 @@ const handleComplete = async (
           </div>
 
           <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-4"
-          >
-            Add Assignment
-          </button>
+  type="submit"
+  className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-4"
+>
+  Add Assignment
+</button>
         </form>
 
         <div className="space-y-4">
