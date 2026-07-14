@@ -1,5 +1,5 @@
 import DashboardLayout from "../components/layout/DashboardLayout";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { askAI } from "../services/aiService";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -9,21 +9,52 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 function AIAssistant() {
   const [message, setMessage] = useState("");
 
-const [messages, setMessages] = useState([
-  {
-    sender: "ai",
-    text: "👋 Hello! I'm CampusOne AI.\nHow can I help you today?",
-  },
-]);
+const [messages, setMessages] = useState(() => {
+  const saved = localStorage.getItem("chatHistory");
+
+  return saved
+    ? JSON.parse(saved)
+    : [
+        {
+  sender: "ai",
+  text:
+    "👋 Hello! I'm CampusOne AI.\nHow can I help you today?",
+  time: new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+}
+      ];
+});
 
 const [loading, setLoading] = useState(false);
+
+const messagesEndRef = useRef(null);
+
+useEffect(() => {
+  localStorage.setItem(
+    "chatHistory",
+    JSON.stringify(messages)
+  );
+}, [messages]);
+
+useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({
+    behavior: "smooth",
+  });
+}, [messages, loading]);
+
 const handleSend = async () => {
   if (!message.trim()) return;
 
   const userMessage = {
-    sender: "user",
-    text: message,
-  };
+  sender: "user",
+  text: message,
+  time: new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+};
 
   setMessages((prev) => [...prev, userMessage]);
 
@@ -35,9 +66,13 @@ const handleSend = async () => {
     setMessages((prev) => [
       ...prev,
       {
-        sender: "ai",
-        text: reply,
-      },
+  sender: "ai",
+  text: reply,
+  time: new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+}
     ]);
   } catch (error) {
     setMessages((prev) => [
@@ -52,6 +87,27 @@ const handleSend = async () => {
   setMessage("");
   setLoading(false);
 };
+
+const clearChat = () => {
+  const defaultMessage = [
+  {
+    sender: "ai",
+    text: "👋 Hello! I'm CampusOne AI.\nHow can I help you today?",
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  },
+];
+
+  setMessages(defaultMessage);
+
+  localStorage.removeItem("chatHistory");
+};
+const copyToClipboard = async (text) => {
+  await navigator.clipboard.writeText(text);
+};
+
   return (
     <DashboardLayout>
       <div className="p-6">
@@ -70,102 +126,82 @@ const handleSend = async () => {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mt-8">
+        <div className="flex justify-end mb-4">
+  <button
+    onClick={clearChat}
+    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+  >
+    🗑️ Clear Chat
+  </button>
+</div>
 
           <div className="h-[420px] border rounded-xl p-4 overflow-y-auto space-y-4">
 
   {messages.map((msg, index) => (
+  <div
+    key={index}
+    className={`flex ${
+      msg.sender === "user"
+        ? "justify-end"
+        : "justify-start"
+    } mb-4`}
+  >
     <div
-      key={index}
-      className={`p-4 rounded-xl max-w-[80%] ${
+      className={`flex items-start gap-3 max-w-[65%] ${
         msg.sender === "user"
-          ? "bg-blue-600 text-white ml-auto"
-          : "bg-gray-100"
+          ? "flex-row-reverse"
+          : ""
       }`}
     >
-      <ReactMarkdown
-  remarkPlugins={[remarkGfm]}
-  components={{
-    h1: ({ children }) => (
-      <h1 className="text-3xl font-bold mt-6 mb-4">
-        {children}
-      </h1>
-    ),
+      {/* Avatar */}
+      <div
+        className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
+          msg.sender === "user"
+            ? "bg-blue-600"
+            : "bg-purple-600"
+        }`}
+      >
+        {msg.sender === "user" ? "A" : "🤖"}
+      </div>
 
-    h2: ({ children }) => (
-      <h2 className="text-2xl font-bold mt-5 mb-3">
-        {children}
-      </h2>
-    ),
-
-    h3: ({ children }) => (
-      <h3 className="text-xl font-bold mt-4 mb-2">
-        {children}
-      </h3>
-    ),
-
-    p: ({ children }) => (
-      <p className="leading-8 mb-4">
-        {children}
-      </p>
-    ),
-
-    strong: ({ children }) => (
-      <strong className="font-bold text-black">
-        {children}
-      </strong>
-    ),
-
-    ul: ({ children }) => (
-      <ul className="list-disc ml-6 mb-4">
-        {children}
-      </ul>
-    ),
-
-    ol: ({ children }) => (
-      <ol className="list-decimal ml-6 mb-4">
-        {children}
-      </ol>
-    ),
-
-    li: ({ children }) => (
-      <li className="mb-2">
-        {children}
-      </li>
-    ),
-
-    code({ inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || "");
-
-      return !inline && match ? (
-        <SyntaxHighlighter
-          style={oneDark}
-          language={match[1]}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, "")}
-        </SyntaxHighlighter>
-      ) : (
-        <code
-          className="bg-gray-200 px-1 py-0.5 rounded"
-          {...props}
-        >
-          {children}
-        </code>
-      );
-    },
-  }}
+      {/* Chat Bubble */}
+     <div
+  className={`rounded-2xl p-4 shadow ${
+    msg.sender === "user"
+      ? "bg-blue-600 text-white"
+      : "bg-gray-100"
+  }`}
 >
-  {msg.text}
-</ReactMarkdown>
+  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+    {msg.text}
+  </ReactMarkdown>
+
+  <p className="text-xs opacity-70 mt-2">
+  {msg.time}
+</p>
+
+  {msg.sender === "ai" && (
+    <div className="flex justify-end mt-3">
+      <button
+        onClick={() => copyToClipboard(msg.text)}
+        className="text-sm text-blue-600 hover:text-blue-800"
+      >
+        📋 Copy
+      </button>
     </div>
-  ))}
+  )}
+</div>
+    </div>
+  </div>
+))}
 
   {loading && (
     <div className="bg-gray-100 rounded-xl p-4 w-fit">
       🤖 Thinking...
     </div>
   )}
+
+  <div ref={messagesEndRef}></div>
 
 </div>
 
